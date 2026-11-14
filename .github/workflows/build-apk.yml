@@ -1,0 +1,67 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build installable APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Set up Gradle 8.7
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+
+      - name: Build debug APK
+        run: gradle assembleDebug --no-daemon --stacktrace
+
+      - name: Rename APK for download
+        run: cp app/build/outputs/apk/debug/app-debug.apk DodgeRunner.apk
+
+      - name: Upload APK as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DodgeRunner-APK
+          path: DodgeRunner.apk
+          if-no-files-found: error
+
+      - name: Attach APK to a GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'latest' }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Latest build' }}
+          body: |
+            ## Dodge Runner — installable Android APK
+
+            Download `DodgeRunner.apk` below and install it on any Android 5.0 (API 21) or newer phone.
+
+            **How to install**
+            1. Tap `DodgeRunner.apk` to download it on your phone.
+            2. Open the file from your notifications or the Downloads folder.
+            3. If Android asks, allow "Install unknown apps" for your browser or file manager.
+            4. Tap **Install**, then **Open**.
+
+            This build is signed with the standard Android debug key, which is fine for
+            sideloading and testing. It is not a Play Store release.
+          files: DodgeRunner.apk
+          fail_on_unmatched_files: true

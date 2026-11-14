@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- ground line -->
+    <path
+        android:fillColor="#2C3852"
+        android:pathData="M22,76 L86,76 L86,80 L22,80 Z" />
+
+    <!-- runner -->
+    <path
+        android:fillColor="#4EE1C1"
+        android:pathData="M34,44 h16 a3,3 0 0 1 3,3 v29 h-19 v-29 a3,3 0 0 1 3,-3 z" />
+
+    <!-- runner eye -->
+    <path
+        android:fillColor="#0E1626"
+        android:pathData="M46,54 m-2.4,0 a2.4,2.4 0 1 0 4.8,0 a2.4,2.4 0 1 0 -4.8,0" />
+
+    <!-- obstacle -->
+    <path
+        android:fillColor="#F26B5B"
+        android:pathData="M64,58 h12 a2,2 0 0 1 2,2 v16 h-16 v-16 a2,2 0 0 1 2,-2 z" />
+
+    <!-- speed lines -->
+    <path
+        android:fillColor="#4DF2F6FF"
+        android:pathData="M18,50 h10 v3 h-10 z M14,60 h8 v3 h-8 z" />
+</vector>
