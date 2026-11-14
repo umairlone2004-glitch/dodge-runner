@@ -19,13 +19,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
 
+      # The hosted runner ships an Android SDK; this step only accepts the
+      # licences and puts sdkmanager on PATH. The 'tools' package is no longer
+      # published by Google, so it must not be requested here.
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+
+      - name: Ensure SDK platform 34 and build-tools are present
+        run: sdkmanager --install "platforms;android-34" "build-tools;34.0.0"
 
       - name: Set up Gradle 8.7
         uses: gradle/actions/setup-gradle@v4
