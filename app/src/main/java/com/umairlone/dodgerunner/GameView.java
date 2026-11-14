@@ -191,6 +191,10 @@ public class GameView extends View implements Choreographer.FrameCallback {
         hillOffset = (hillOffset + px * 0.25f) % (w * 0.9f);
         groundOffset = (groundOffset + px) % (w * 0.12f);
         playerBottom = groundY - Math.abs((float) Math.sin(uiTime * 2.4f)) * h * 0.008f;
+        if (state == STATE_OVER) {
+            // freeze the runner where it crashed instead of bobbing it
+            playerBottom = groundY;
+        }
     }
 
     private void update(float dt) {
